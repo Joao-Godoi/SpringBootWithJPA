@@ -2,8 +2,11 @@ package com.joaogodoi.SpringBootWithJPA.services;
 
 import com.joaogodoi.SpringBootWithJPA.entities.User;
 import com.joaogodoi.SpringBootWithJPA.repositories.UserRepository;
+import com.joaogodoi.SpringBootWithJPA.services.exceptions.DatabaseException;
 import com.joaogodoi.SpringBootWithJPA.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +31,13 @@ public class UserService {
     }
 
     public void delete(Long userId) {
-        userRepository.deleteById(userId);
+        try {
+            userRepository.deleteById(userId);
+        } catch (EmptyResultDataAccessException error) {
+            throw new ResourceNotFoundException(userId);
+        } catch (DataIntegrityViolationException error) {
+            throw new DatabaseException(error.getMessage());
+        }
     }
 
     public User update(Long userId, User updateData) {
