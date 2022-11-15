@@ -12,6 +12,11 @@ import java.util.Objects;
 @Table(name = "tb_user")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "client")
+    private final List<Order> orders = new ArrayList<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,10 +24,6 @@ public class User implements Serializable {
     private String email;
     private String phone;
     private String password;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "client")
-    private List<Order> orders = new ArrayList<>();
 
     public User() {
     }
