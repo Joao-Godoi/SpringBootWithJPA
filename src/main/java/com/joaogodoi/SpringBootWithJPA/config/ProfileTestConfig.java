@@ -1,8 +1,10 @@
 package com.joaogodoi.SpringBootWithJPA.config;
 
+import com.joaogodoi.SpringBootWithJPA.entities.Category;
 import com.joaogodoi.SpringBootWithJPA.entities.Order;
 import com.joaogodoi.SpringBootWithJPA.entities.User;
 import com.joaogodoi.SpringBootWithJPA.entities.enums.OrderStatus;
+import com.joaogodoi.SpringBootWithJPA.repositories.CategoryRepository;
 import com.joaogodoi.SpringBootWithJPA.repositories.OrderRepository;
 import com.joaogodoi.SpringBootWithJPA.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class ProfileTestConfig implements CommandLineRunner {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
     public void run(String... args) throws Exception {
         User user1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
@@ -32,5 +37,10 @@ public class ProfileTestConfig implements CommandLineRunner {
         Order order2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.WAITING_PAYMENT, user2);
         Order order3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.WAITING_PAYMENT, user1);
         orderRepository.saveAll(Arrays.asList(order1, order2, order3));
+
+        Category category1 = new Category(null, "Electronics");
+        Category category2 = new Category(null, "Books");
+        Category category3 = new Category(null, "Computers");
+        categoryRepository.saveAll(Arrays.asList(category1, category2, category3));
     }
 }
