@@ -1,5 +1,6 @@
 package com.joaogodoi.SpringBootWithJPA.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -15,6 +16,9 @@ public class Product implements Serializable {
     @ManyToMany
     @JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private final Set<Category> categories = new HashSet<>();
+
+    @OneToMany(mappedBy = "id.product")
+    private final Set<OrderItem> items = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,6 +81,15 @@ public class Product implements Serializable {
 
     public Set<Category> getCategories() {
         return categories;
+    }
+
+    @JsonIgnore
+    public Set<Order> getOrders() {
+        Set<Order> setOrder = new HashSet<>();
+        for (OrderItem orderItem : items) {
+            setOrder.add(orderItem.getOrder());
+        }
+        return setOrder;
     }
 
     @Override
