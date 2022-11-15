@@ -1,14 +1,8 @@
 package com.joaogodoi.SpringBootWithJPA.config;
 
-import com.joaogodoi.SpringBootWithJPA.entities.Category;
-import com.joaogodoi.SpringBootWithJPA.entities.Order;
-import com.joaogodoi.SpringBootWithJPA.entities.Product;
-import com.joaogodoi.SpringBootWithJPA.entities.User;
+import com.joaogodoi.SpringBootWithJPA.entities.*;
 import com.joaogodoi.SpringBootWithJPA.entities.enums.OrderStatus;
-import com.joaogodoi.SpringBootWithJPA.repositories.CategoryRepository;
-import com.joaogodoi.SpringBootWithJPA.repositories.OrderRepository;
-import com.joaogodoi.SpringBootWithJPA.repositories.ProductRepository;
-import com.joaogodoi.SpringBootWithJPA.repositories.UserRepository;
+import com.joaogodoi.SpringBootWithJPA.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +25,9 @@ public class ProfileTestConfig implements CommandLineRunner {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private OrdemItemRepository ordemItemRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -62,5 +59,11 @@ public class ProfileTestConfig implements CommandLineRunner {
         product4.getCategories().add(category3);
         product5.getCategories().add(category2);
         productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5));
+
+        OrderItem ordemItem1 = new OrderItem(order1, product1, 2, product1.getPrice());
+        OrderItem ordemItem2 = new OrderItem(order1, product3, 1, product3.getPrice());
+        OrderItem ordemItem3 = new OrderItem(order2, product3, 2, product3.getPrice());
+        OrderItem ordemItem4 = new OrderItem(order3, product5, 2, product5.getPrice());
+        ordemItemRepository.saveAll(Arrays.asList(ordemItem1, ordemItem2, ordemItem3, ordemItem4));
     }
 }
