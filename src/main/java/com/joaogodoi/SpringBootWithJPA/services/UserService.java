@@ -2,6 +2,7 @@ package com.joaogodoi.SpringBootWithJPA.services;
 
 import com.joaogodoi.SpringBootWithJPA.entities.User;
 import com.joaogodoi.SpringBootWithJPA.repositories.UserRepository;
+import com.joaogodoi.SpringBootWithJPA.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findById(Long UserId) {
-        Optional<User> userById = userRepository.findById(UserId);
-        return userById.get();
+    public User findById(Long userId) {
+        Optional<User> userById = userRepository.findById(userId);
+        return userById.orElseThrow(() -> new ResourceNotFoundException(userId));
     }
 
     public User create(User user) {
